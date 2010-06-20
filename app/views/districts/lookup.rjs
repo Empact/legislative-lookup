@@ -8,10 +8,10 @@ else
   marker_text = ''
   page << @map.clear_overlays
   @districts.each do |district|
-    marker_text += %{<div style="color: #{district.level.color};">#{district.full_name}</div>}
+    marker_text += %{<div style="color: #{district.level.fill_color};">#{district.full_name}</div>}
 
     page << @map.add_overlay(
-      GPolygon.from_georuby(district.polygon,"#000000",0,0.0,district.level.color,0.3)
+      GPolygon.from_georuby(district.polygon, district.level.stroke_color,1,1.0,district.level.fill_color,0.3)
     )
   end
 

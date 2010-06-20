@@ -1,15 +1,18 @@
 class Level
   LEVELS = {
     'federal' => {
-      :color => 'red',
-      :description => 'Congressional District',
+      :fill_color => 'red',
+      :stroke_color => 'gray',
+      :description => 'Congressional District'
     },
     'state_upper' => {
-      :color => 'green',
+      :fill_color => 'green',
+      :stroke_color => 'gray',
       :description => 'Upper House District'
     },
     'state_lower' => {
-      :color => 'blue',
+      :fill_color => 'blue',
+      :stroke_color => 'gray',
       :description => 'Lower House District'
     }
   }
@@ -22,10 +25,12 @@ class Level
 
   def initialize(level)
     @level = level
-    attrs = LEVELS.fetch(level)
-    @color = attrs[:color]
-    @description = attrs[:description]
   end
 
-  attr_reader :color, :description, :level
+  def method_missing(method, *args)
+    @attrs ||= LEVELS.fetch(level)
+    @attrs.fetch(method.to_sym)
+  end
+
+  attr_reader :level
 end
