@@ -9,7 +9,7 @@ class District < ActiveRecord::Base
   end
   
   def display_name
-    if /^[0-9]*$/ =~ name
+    if /^\d*$/ =~ name
       "#{state_name} #{name.to_i.ordinalize}"
     else
       "#{state_name} #{name}"
@@ -77,6 +77,5 @@ class District < ActiveRecord::Base
     "72" => "PR",
     "74" => "UM",
     "78" => "VI"
-    
     }
 end
