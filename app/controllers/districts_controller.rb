@@ -29,7 +29,7 @@ class DistrictsController < ApplicationController
     if @districts
       @map.center_zoom_init([params[:lat], params[:lng]],6)
 
-      envelope = @districts.detect{|d| d.level == 'federal' }.the_geom[0].envelope
+      envelope = @districts.federal.first.polygon.envelope
 
       @map = Variable.new("map")
 

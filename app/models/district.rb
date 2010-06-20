@@ -1,26 +1,16 @@
 class District < ActiveRecord::Base
-  COLORS = {
-    'federal' => 'red',
-    'state_upper' => 'green',
-    'state_lower' => 'blue'
-  }.freeze
-
-  DESCRIPTION = {
-    'federal' => 'Congressional District',
-    'state_upper' => 'Upper House District',
-    'state_lower' => 'Lower House District'
-  }.freeze
+  composed_of :level, :mapping => %w(level level)
 
   named_scope :lookup, lambda {|lat, lng|
     {:conditions => ["ST_Contains(the_geom, GeometryFromText('POINT(? ?)', -1))",lng.to_f,lat.to_f]}
   }
 
-  def polygon
-    @polygon ||= the_geom[0]
+  Level.levels.each do |level|
+    named_scope level, :conditions => {:level => level}
   end
 
-  def color
-    COLORS.fetch(level)
+  def polygon
+    @polygon ||= the_geom[0]
   end
 
   def display_name
@@ -32,7 +22,7 @@ class District < ActiveRecord::Base
   end
 
   def full_name
-    "#{display_name} #{DESCRIPTION.fetch(level)}"
+    "#{display_name} #{level.description}"
   end
 
   FIPS_CODES = {
