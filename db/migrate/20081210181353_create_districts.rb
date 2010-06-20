@@ -3,16 +3,21 @@ class CreateDistricts < ActiveRecord::Migration
     config = Rails::Configuration.new
     db     = config.database_configuration[RAILS_ENV]["database"]
     user   = config.database_configuration[RAILS_ENV]["username"]
+    if ENV['ADD_POSTGIS']
+      `psql -d #{db} -U #{user} -c 'CREATE LANGUAGE plpgsql'`
+      `psql -d #{db} -f /opt/local/share/postgresql84/contrib/postgis-1.5/postgis.sql -U #{user}`
+      `psql -d #{db} -f /opt/local/share/postgresql84/contrib/postgis-1.5/spatial_ref_sys.sql -U #{user}`
+    end
     `psql -d #{db} -f #{RAILS_ROOT}/db/congress.sql -U #{user}`
-        
+
     add_index "districts", "the_geom", :spatial=>true
-    
+
     add_column :districts, :state_name, :string
     add_column :districts, :level, :string
-    
+
     execute "UPDATE districts SET level = 'federal'"
     execute "UPDATE districts SET name = '1' where name = 'One'"
-    
+
     District::FIPS_CODES.each do |fips_code, name|
       execute "UPDATE districts SET state_name = '#{name}' WHERE state = '#{fips_code}'"
     end
