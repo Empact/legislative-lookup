@@ -4,12 +4,11 @@ class DistrictsController < ApplicationController
     @lat = params[:lat]
     @lng = params[:lng]
     
-    @districts = District.lookup(@lat, @lng) if !@lat.blank? && !@lng.blank?
+    @districts = District.lookup(@lat, @lng) if @lat.present? && @lng.present?
     if @districts && @districts.any?
-      @federal = @districts.find{|d| d.level == 'federal' }
-      @upper = @districts.find{|d| d.level == 'state_upper' }
-      @lower = @districts.find{|d| d.level == 'state_lower' }
-      
+      @federal = @districts.detect{|d| d.level == 'federal' }
+      @upper = @districts.detect{|d| d.level == 'state_upper' }
+      @lower = @districts.detect{|d| d.level == 'state_lower' }
     end
     respond_to do | type |
       type.js do 
