@@ -14,7 +14,6 @@ class DistrictsController < ApplicationController
       end
       type.html do
         load_google_map
-        render :layout => 'maps'
       end
       type.xml { render :layout => false}
       type.kml { render :layout => false}
