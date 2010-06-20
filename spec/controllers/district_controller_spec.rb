@@ -12,9 +12,7 @@ describe DistrictsController do
     get :lookup, :lat => 36.158887, :lng => -86.782056, :format => 'js'
     response.should be_success
     assigns[:districts].size.should == 3
-    assigns[:upper].should_not be_nil
-    assigns[:lower].should_not be_nil
-    assigns[:federal].display_name.should == 'TN 5th'
+    assigns[:districts].federal.first.display_name.should == 'TN 5th'
   end
   
   it "should allow lookups via xml" do

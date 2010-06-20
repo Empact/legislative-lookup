@@ -9,7 +9,7 @@ describe District do
   it "should be able to locate by point" do
     districts = District.lookup(36.158887, -86.782056)
     districts.size.should == 3
-    districts.select{|d| d.level == 'federal'}.first.display_name.should == 'TN 5th'
+    districts.federal.first.display_name.should == 'TN 5th'
   end
   
   it "should be able to load a polygon object" do
