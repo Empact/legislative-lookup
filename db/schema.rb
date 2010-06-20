@@ -9,20 +9,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081211190903) do
+ActiveRecord::Schema.define(:version => 20090624155133) do
 
   create_table "districts", :primary_key => "gid", :force => true do |t|
-    t.column "state", :string, :limit => 2
-    t.column "cd", :string, :limit => 3
-    t.column "lsad", :string, :limit => 2
-    t.column "name", :string, :limit => 90
-    t.column "lsad_trans", :string, :limit => 50
-    t.column "the_geom", :multi_polygon
-    t.column "state_name", :string
-    t.column "level", :string
-    t.column "census_geo_id", :string
+    t.string        "state",         :limit => 2
+    t.string        "cd",            :limit => 3
+    t.string        "lsad",          :limit => 2
+    t.string        "name",          :limit => 90
+    t.string        "lsad_trans",    :limit => 50
+    t.multi_polygon "the_geom",      :limit => nil
+    t.string        "state_name"
+    t.string        "level"
+    t.string        "census_geo_id"
   end
 
-  add_index "districts", ["the_geom"], :name => "index_districts_on_the_geom", :spatial=> true 
+  add_index "districts", ["the_geom"], :name => "index_districts_on_the_geom", :spatial => true
 
 end
