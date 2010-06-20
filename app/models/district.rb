@@ -1,4 +1,15 @@
 class District < ActiveRecord::Base
+  COLORS = {
+    'federal' => 'red',
+    'state_upper' => 'green',
+    'state_lower' => 'blue'
+  }.freeze
+
+  DESCRIPTION = {
+    'federal' => 'Congressional District',
+    'state_upper' => 'Upper House District',
+    'state_lower' => 'Lower House District'
+  }.freeze
 
   named_scope :lookup, lambda {|lat, lng|
     {:conditions => ["ST_Contains(the_geom, GeometryFromText('POINT(? ?)', -1))",lng.to_f,lat.to_f]}
@@ -8,12 +19,20 @@ class District < ActiveRecord::Base
     @polygon ||= the_geom[0]
   end
 
+  def color
+    COLORS.fetch(level)
+  end
+
   def display_name
     if /^\d*$/ =~ name
       "#{state_name} #{name.to_i.ordinalize}"
     else
       "#{state_name} #{name}"
     end
+  end
+
+  def full_name
+    "#{display_name} #{DESCRIPTION.fetch(level)}"
   end
 
   FIPS_CODES = {

@@ -4,11 +4,8 @@ class DistrictsController < ApplicationController
     @lat = params[:lat]
     @lng = params[:lng]
 
-    @districts = District.lookup(@lat, @lng) if @lat.present? && @lng.present?
-    if @districts && @districts.any?
-      @federal = @districts.detect{|d| d.level == 'federal' }
-      @upper = @districts.detect{|d| d.level == 'state_upper' }
-      @lower = @districts.detect{|d| d.level == 'state_lower' }
+    if @lat.present? && @lng.present?
+      @districts = District.lookup(@lat, @lng)
     end
     respond_to do | type |
       type.js do
@@ -30,21 +27,11 @@ class DistrictsController < ApplicationController
     @map = GMap.new("map_div")
     @map.control_init(:large_map => true, :map_type => true)
     if @districts
-
       @map.center_zoom_init([params[:lat], params[:lng]],6)
 
-      federal_poly = @federal.the_geom[0]
-      upper_poly   = @upper.the_geom[0]
-      lower_poly   = @lower.the_geom[0] if @lower
-
-      envelope = federal_poly.envelope
+      envelope = @districts.detect{|d| d.level == 'federal' }.the_geom[0].envelope
 
       @map = Variable.new("map")
-
-      @polygons = []
-      @polygons << GPolygon.from_georuby(federal_poly,"#000000",0,0.0,"#ff0000",0.3)
-      @polygons << GPolygon.from_georuby(upper_poly,  "#000000",0,0.0,"#00ff00",0.3)
-      @polygons << GPolygon.from_georuby(lower_poly,  "#000000",0,0.0,"#0000ff",0.3) if lower_poly
 
       @center = GLatLng.from_georuby(envelope.center)
       @zoom = @map.get_bounds_zoom_level(GLatLngBounds.from_georuby(envelope))
