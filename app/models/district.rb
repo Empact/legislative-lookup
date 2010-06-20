@@ -1,13 +1,13 @@
 class District < ActiveRecord::Base
-  
+
   named_scope :lookup, lambda {|lat, lng|
     {:conditions => ["ST_Contains(the_geom, GeometryFromText('POINT(? ?)', -1))",lng.to_f,lat.to_f]}
   }
-  
+
   def polygon
     @polygon ||= the_geom[0]
   end
-  
+
   def display_name
     if /^\d*$/ =~ name
       "#{state_name} #{name.to_i.ordinalize}"
@@ -15,8 +15,8 @@ class District < ActiveRecord::Base
       "#{state_name} #{name}"
     end
   end
-  
-  FIPS_CODES = { 
+
+  FIPS_CODES = {
     "01" => "AL",
     "02" => "AK",
     "04" => "AZ",
