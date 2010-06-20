@@ -33,4 +33,6 @@ class Level
   end
 
   attr_reader :level
+  alias_method :to_s, :level
+  delegate :to_sym, :to => :level
 end

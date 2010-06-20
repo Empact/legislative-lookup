@@ -4,7 +4,7 @@ xml.response do
 	xml.lng params[:lng]
 	if @districts && @districts.any?
 	  @districts.each do | d | 
-  		xml.tag!(d.level.intern) do
+  		xml.tag!(d.level) do
   			xml.state d.state_name
   			xml.district d.name
   			xml.display_name d.display_name
