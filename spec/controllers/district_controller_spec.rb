@@ -15,6 +15,13 @@ describe DistrictsController do
     assigns[:districts].federal.first.display_name.should == 'TN 5th'
   end
   
+  it "should allow selecting a specific level" do
+    get :lookup, :lat => 36.158887, :lng => -86.782056, :format => 'js', :level => 'federal'
+    response.should be_success
+    assigns[:districts].size.should == 1
+    assigns[:districts].first.display_name.should == 'TN 5th'
+  end
+  
   it "should allow lookups via xml" do
     get :lookup, :lat => 36.158887, :lng => -86.782056, :format => 'xml'
     response.should be_success

@@ -5,7 +5,7 @@ class DistrictsController < ApplicationController
     @lng = params[:lng]
 
     if @lat.present? && @lng.present?
-      @districts = District.lookup(@lat, @lng)
+      @districts = District.level(params[:level]).lookup(@lat, @lng)
     end
     respond_to do | type |
       type.js do

@@ -4,6 +4,13 @@ class District < ActiveRecord::Base
   named_scope :lookup, lambda {|lat, lng|
     {:conditions => ["ST_Contains(the_geom, GeometryFromText('POINT(? ?)', -1))",lng.to_f,lat.to_f]}
   }
+  named_scope :level, lambda {|level|
+    if level.present?
+      {:conditions => {:level => level}}
+    else
+      {}
+    end
+  }
 
   Level.levels.each do |level|
     named_scope level, :conditions => {:level => level}
