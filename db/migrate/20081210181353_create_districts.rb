@@ -3,10 +3,10 @@ class CreateDistricts < ActiveRecord::Migration
     config = Rails::Configuration.new
     db     = config.database_configuration[RAILS_ENV]["database"]
     user   = config.database_configuration[RAILS_ENV]["username"]
-    if ENV['ADD_POSTGIS']
+    if ENV['POSTGIS_SQL_PATH']
       `psql -d #{db} -U #{user} -c 'CREATE LANGUAGE plpgsql'`
-      `psql -d #{db} -f /opt/local/share/postgresql84/contrib/postgis-1.5/postgis.sql -U #{user}`
-      `psql -d #{db} -f /opt/local/share/postgresql84/contrib/postgis-1.5/spatial_ref_sys.sql -U #{user}`
+      `psql -d #{db} -f #{File.join(ENV['POSTGIS_SQL_PATH'], 'postgis.sql')} -U #{user}`
+      `psql -d #{db} -f #{File.join(ENV['POSTGIS_SQL_PATH'], 'spatial_ref_sys.sql')} -U #{user}`
     end
     `psql -d #{db} -f #{RAILS_ROOT}/db/congress.sql -U #{user}`
 
