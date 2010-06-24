@@ -5,12 +5,14 @@ class CreateDistricts < ActiveRecord::Migration
     user   = config.database_configuration[RAILS_ENV]["username"]
     host   = config.database_configuration[RAILS_ENV]["host"]
     password = config.database_configuration[RAILS_ENV]["password"]
+    psql = %{PGPASSWORD="#{password}" psql -d #{db} -h #{host} -U #{user}}
+
     if ENV['POSTGIS_SQL_PATH']
-      `PGPASSWORD="#{password}" psql -d #{db} -h #{host} -U #{user} -c 'CREATE LANGUAGE plpgsql'`
-      `PGPASSWORD="#{password}" psql -d #{db} -h #{host} -U #{user} -f #{File.join(ENV['POSTGIS_SQL_PATH'], 'postgis.sql')} `
-      `PGPASSWORD="#{password}" psql -d #{db} -h #{host} -U #{user} -f #{File.join(ENV['POSTGIS_SQL_PATH'], 'spatial_ref_sys.sql')} -U #{user}`
+      `#{psql} -c 'CREATE LANGUAGE plpgsql'`
+      `#{psql} -f #{File.join(ENV['POSTGIS_SQL_PATH'], 'postgis.sql')} `
+      `#{psql} -f #{File.join(ENV['POSTGIS_SQL_PATH'], 'spatial_ref_sys.sql')}`
     end
-    `PGPASSWORD="#{password}" psql -d #{db} -h #{host} -U #{user} -f #{RAILS_ROOT}/db/congress.sql`
+    `#{psql} -f #{RAILS_ROOT}/db/congress.sql`
 
     add_index "districts", "the_geom", :spatial=>true
 
