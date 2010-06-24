@@ -8,7 +8,7 @@ else
   marker_text = ''
   page << @map.clear_overlays
   @districts.each_with_index do |district, index|
-    marker_text += %{<a style="color: #{district.level.fill_color};" onclick="togglePolygon(polygon_#{index})">#{district.full_name}</a><br />}
+    marker_text += %{<a style="color: #{district.level.fill_color};" onclick="togglePolygons([polygon_#{index}])">#{district.full_name}</a><br />}
 
     @polygon = GPolygon.from_georuby(district.polygon, district.level.stroke_color,1,1.0,district.level.fill_color,0.3)
     page << "polygon_#{index} = #{@polygon.create}"

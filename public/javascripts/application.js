@@ -1,9 +1,11 @@
-function togglePolygon(polygon) {
-  if (polygon.isHidden()) {
-    polygon.show();
-  } else {
-    polygon.hide();
-  }
+function togglePolygons(polygons) {
+  polygons.each(function(polygon) {
+    if (polygon.isHidden()) {
+      polygon.show();
+    } else {
+      polygon.hide();
+    }
+  });
 }
 
 var geocoder = new GClientGeocoder();
