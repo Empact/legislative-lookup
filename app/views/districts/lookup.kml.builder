@@ -17,7 +17,9 @@ xml.kml("xmlns" => KML_NS) do
 
           xml.name d.name
           xml.styleUrl "#myStyle"
-          xml << d.polygon.as_kml(:altitude => 2000, :altitude_mode => :relativeToGround)
+          d.the_geom.each do |polygon|
+            xml << polygon.as_kml(:altitude => 2000, :altitude_mode => :relativeToGround)
+          end
         end
       end
     end

@@ -11,7 +11,9 @@ xml.rss(:version => "2.0", "xmlns:georss" => GEORSS_NS) do
       xml.item do
         xml.title d.display_name
         xml.description d.level
-        xml << d.polygon.as_georss
+        d.the_geom.each do |polygon|
+          xml << polygon.as_georss
+        end
       end
     end
   end
