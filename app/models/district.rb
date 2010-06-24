@@ -17,6 +17,8 @@ class District < ActiveRecord::Base
     named_scope level, :conditions => {:level => level}
   end
 
+  delegate :envelope, :to => :the_geom
+
   def display_name
     if /^\d*$/ =~ name
       "#{state_name} #{name.to_i.ordinalize}"
