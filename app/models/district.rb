@@ -17,10 +17,6 @@ class District < ActiveRecord::Base
     named_scope level, :conditions => {:level => level}
   end
 
-  def polygon
-    @polygon ||= the_geom[0]
-  end
-
   def display_name
     if /^\d*$/ =~ name
       "#{state_name} #{name.to_i.ordinalize}"
