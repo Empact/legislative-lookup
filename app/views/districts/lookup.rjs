@@ -7,12 +7,19 @@ if @message
 else
   marker_text = ''
   page << @map.clear_overlays
-  @districts.each_with_index do |district, index|
-    marker_text += %{<a style="color: #{district.level.fill_color};" onclick="togglePolygons([polygon_#{index}])">#{district.full_name}</a><br />}
+  @districts.each_with_index do |district, district_index|
+    district_polygons = []
 
-    @polygon = GPolygon.from_georuby(district.polygon, district.level.stroke_color,1,1.0,district.level.fill_color,0.3)
-    page << "polygon_#{index} = #{@polygon.create}"
-    page << @map.add_overlay(:"polygon_#{index}")
+    district.the_geom.each_with_index do |polygon, polygon_index|
+      polygon_name = "polygon_#{district_index}_#{polygon_index}"
+      district_polygons << polygon_name
+
+      @polygon = GPolygon.from_georuby(polygon, district.level.stroke_color,1,1.0,district.level.fill_color,0.3)
+      page << "#{polygon_name} = #{@polygon.create}"
+      page << @map.add_overlay(polygon_name.to_sym)
+    end
+
+    marker_text += %{<a style="color: #{district.level.fill_color};" onclick="togglePolygons([#{district_polygons.join(', ')}])">#{district.full_name}</a><br />}
   end
 
   page << @map.add_overlay(GMarker.new([ @lat.to_f, @lng.to_f],:title => "Districts", :info_window => marker_text))
