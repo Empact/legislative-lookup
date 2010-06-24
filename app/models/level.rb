@@ -3,17 +3,20 @@ class Level
     'federal' => {
       :fill_color => 'red',
       :stroke_color => 'gray',
-      :description => 'Congressional District'
+      :description => 'Congressional District',
+      :sort_order => 1
     },
     'state_upper' => {
       :fill_color => 'green',
       :stroke_color => 'gray',
-      :description => 'Upper House District'
+      :description => 'Upper House District',
+      :sort_order => 2
     },
     'state_lower' => {
       :fill_color => 'blue',
       :stroke_color => 'gray',
-      :description => 'Lower House District'
+      :description => 'Lower House District',
+      :sort_order => 3
     }
   }
 

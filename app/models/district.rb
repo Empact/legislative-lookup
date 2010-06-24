@@ -1,5 +1,6 @@
 class District < ActiveRecord::Base
   composed_of :level, :mapping => %w(level level)
+  delegate :sort_order, :to => :level
 
   named_scope :lookup, lambda {|lat, lng|
     {:conditions => ["ST_Contains(the_geom, GeometryFromText('POINT(? ?)', -1))",lng.to_f,lat.to_f]}

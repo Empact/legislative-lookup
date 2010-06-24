@@ -7,7 +7,7 @@ if @message
 else
   marker_text = ''
   page << @map.clear_overlays
-  @districts.each_with_index do |district, district_index|
+  @districts.sort_by(&:sort_order).each_with_index do |district, district_index|
     district_polygons = []
 
     district.the_geom.each_with_index do |polygon, polygon_index|
