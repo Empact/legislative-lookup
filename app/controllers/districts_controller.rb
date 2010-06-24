@@ -26,7 +26,7 @@ class DistrictsController < ApplicationController
 
   private
   def load_envelope
-    @envelope = @districts.federal.first.polygon.envelope if @districts
+    @envelope = @districts.federal.first.the_geom.envelope if @districts
   end
   
   def load_google_map
